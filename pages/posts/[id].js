@@ -3,6 +3,9 @@ import Head from 'next/head';
 import Date from '../../components/date';
 import utilStyles from '../../styles/utils.module.css';
 import { getAllPostIds, getPostData } from '../../lib/posts';
+import { useAuth } from '../../context/AuthUserContext';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export async function getStaticProps({ params }) {
     const postData = await getPostData(params.id);
@@ -22,6 +25,14 @@ export async function getStaticPaths() {
 }
 
 export default function Post({ postData }) {
+
+    const { authUser, loading, signOut } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+      if (!loading && !authUser)
+        router.push('/login')
+    }, [authUser, loading])
+
     return (
         <Layout>
             {/* Add this <Head> tag */}
