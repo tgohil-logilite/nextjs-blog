@@ -15,10 +15,10 @@ export default function Header () {
   }
 
   return (
-    <div className='header'>
-     
-      {session && <a href="#" onClick={handleSignout} className="btn-signin">Sign out</a>  }
-      {!session && <a href="#" onClick={handleSignin}  className="btn-signin">Sign in</a>  }
+    <div className='header' >
+      
+      {session && <a href="#" onClick={handleSignout} className="btn-signin" style={{float: 'right', paddingRight : '25px'}}>Sign out</a>  }
+      {!session && <a href="#" onClick={handleSignin}  className="btn-signin" style={{float: 'right', paddingRight : '25px'}}>Sign in</a>  }
     </div>
   )
 }
