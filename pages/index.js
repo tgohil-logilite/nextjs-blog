@@ -1,47 +1,40 @@
-import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
-import utilStyles from '../styles/utils.module.css';
-import Date from '../components/date';
-import Link from 'next/link';
-import { getSortedPostsData } from '../lib/posts';
+import Head from 'next/head'
+import Header from '../components/Header'
+import styles from '../styles/Home.module.css'
+import { useSession } from 'next-auth/react'
 
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
-  return {
-    props: {
-      allPostsData,
-    },
-  };
-}
+export default function Home() {
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
 
-export default function Home({ allPostsData }) {
   return (
-    <Layout home>
+    <div className={styles.container}>
       <Head>
-        <title>{siteTitle}</title>
+        <title>Nextjs | Next-Auth</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className={utilStyles.headingMd}>
-        <p>Assistant Professor, IT Department, SCET, Surat.</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this on{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-      </section>
-      {/* Add this <section> tag below the existing <section> tag */}
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-           <li className={utilStyles.listItem} key={id}>
-           <Link href={`/posts/${id}`}>{title}</Link>
-           <br />
-           <small className={utilStyles.lightText}>
-             <Date dateString={date} />
-           </small>
-         </li>
-          ))}
-        </ul>
-      </section>
-    </Layout>
-  );
+      <Header />
+      <main className={styles.main}>
+        <h1 className={styles.title}>Authentication in Next.js app using Next-Auth</h1>
+        <div className={styles.user}>
+           {loading && <div className={styles.title}>Loading...</div>}
+           {
+            session &&
+              <>
+               <p style={{ marginBottom: '10px' }}> Welcome, {session.user.name ?? session.user.email}</p> <br />
+               <img src={session.user.image} alt="" className={styles.avatar} />
+              </>
+            }
+           {
+            !session &&
+              <>
+               <p className={styles.title}>Please Sign in</p>
+               <img src="https://cdn.dribbble.com/users/759083/screenshots/6915953/2.gif" alt="" className={styles.avatar} />
+               <p className={styles.credit}>GIF by <a href="https://dribbble.com/shots/6915953-Another-man-down/attachments/6915953-Another-man-down?mode=media">Another man</a> </p>
+              </>
+           }
+         </div>
+      </main>
+    </div>
+  )
 }
