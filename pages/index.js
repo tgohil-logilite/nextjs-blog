@@ -6,7 +6,10 @@ import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
 import Date from '../components/date';
 import Link from 'next/link';
-
+import IndexNavbar from "../components/Navbars/IndexNavbar.js";
+import AdminNavbar from "../components/Navbars/AdminNavbar"
+import AuthNavbar from "../components/Navbars/AuthNavbar"
+import Sidebar from '../components/Sidebar/Sidebar';
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -17,10 +20,13 @@ export default function Home() {
     
 
     <div className={styles.container}>
+      
+      <AuthNavbar />
+      
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <Header />
+      
       <main className={styles.main}>
       <section className={utilStyles.headingMd}>
          <p>Prof. Tushar Gohil</p>
@@ -32,8 +38,10 @@ export default function Home() {
            {
             session &&
               <>
+              <Sidebar />
                <p style={{ marginBottom: '10px' }}> Welcome, {session.user.name ?? session.user.email}</p> <br />
                <img src={session.user.image} alt="" className={styles.avatar} />
+              
               </>
             }
            {
