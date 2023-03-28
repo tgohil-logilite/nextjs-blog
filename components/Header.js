@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useSession, signIn, signOut } from 'next-auth/react'
 
-export default function Header () {
+export default function Header1 () {
   const { data: session } = useSession();
 
   const handleSignin = (e) => {

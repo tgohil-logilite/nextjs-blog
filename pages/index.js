@@ -1,52 +1,47 @@
-import Head from 'next/head'
-import Header from '../components/Header'
-import styles from '../styles/Home.module.css'
-import { useSession } from 'next-auth/react'
-import { siteTitle } from '../components/layout';
+import Head from 'next/head';
+import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
-import AdminNavbar from "../components/Navbars/AdminNavbar";
+import Date from '../components/date';
+import Link from 'next/link';
+import { getSortedPostsData } from '../lib/posts';
 
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
 
-export default function Home() {
-  const { data: session, status } = useSession()
-  const loading = status === "loading"
-
+export default function Home({ allPostsData }) {
   return (
-    <>
-  
-    <div className="relative md:ml-64 bg-blueGray-100">
-    <AdminNavbar />
-    
-    </div>
-  </>
-    // <div className={styles.container}>
-    //   <Head>
-    //     <title>{siteTitle}</title>
-    //   </Head>
-    //   <Header />
-    //   <main className={styles.main}>
-    //   <section className={utilStyles.headingMd}>
-    //      <p>Prof. Tushar Gohil</p>
-    //     <p>Assistant Professor, IT Department, SCET, Surat.</p>
-       
-    //   </section>
-    //     <div className={styles.user}>
-    //        {loading && <div className={styles.title}>Loading...</div>}
-    //        {
-    //         session &&
-    //           <>
-    //            <p style={{ marginBottom: '10px' }}> Welcome, {session.user.name ?? session.user.email}</p> <br />
-    //            <img src={session.user.image} alt="" className={styles.avatar} />
-    //           </>
-    //         }
-    //        {
-    //         !session &&
-    //           <>
-    //            <p className={styles.title}>Please Sign in</p>
-    //           </>
-    //        }
-    //      </div>
-    //   </main>
-    // </div>
-  )
+    <Layout home>
+      <Head>
+        <title>{siteTitle}</title>
+      </Head>
+      <section className={utilStyles.headingMd}>
+        <p>Assistant Professor, IT Department, SCET, Surat.</p>
+        <p>
+          (This is a sample website - you’ll be building a site like this on{' '}
+          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+        </p>
+      </section>
+      {/* Add this <section> tag below the existing <section> tag */}
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <ul className={utilStyles.list}>
+          {allPostsData.map(({ id, date, title }) => (
+           <li className={utilStyles.listItem} key={id}>
+           <Link href={`/posts/${id}`}>{title}</Link>
+           <br />
+           <small className={utilStyles.lightText}>
+             <Date dateString={date} />
+           </small>
+         </li>
+          ))}
+        </ul>
+      </section>
+    </Layout>
+  );
 }
