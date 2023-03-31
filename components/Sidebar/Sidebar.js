@@ -1,12 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from 'next-auth/react'
 
 import NotificationDropdown from "../Dropdowns/NotificationDropdown.js";
 import UserDropdown from "../Dropdowns/UserDropdown.js";
+import Header from "../Header.js";
+
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const { data: session, status } = useSession()
   const router = useRouter();
   return (
     <>
@@ -18,14 +22,14 @@ export default function Sidebar() {
             type="button"
             onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
           >
-            <i className="fas fa-bars"></i>
+            <i className="fas fa-bars">h</i>
           </button>
           {/* Brand */}
-          <Link href="/">
-           
-              Notus NextJS
+          <p style={{ marginBottom: '2px' }}> Welcome, {session.user.name ?? session.user.email}</p> <br />
           
-          </Link>
+             
+          
+       
           {/* User */}
           <ul className="md:hidden items-center flex flex-wrap list-none">
             <li className="inline-block relative">
@@ -84,7 +88,7 @@ export default function Sidebar() {
 
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
               <li className="items-center">
-                <Link href="/admin/dashboard">
+                <a href="/admin/dashboard">
                   
                     <i
                       className={
@@ -96,7 +100,7 @@ export default function Sidebar() {
                     ></i>{" "}
                     Dashboard
                  
-                </Link>
+                </a>
               </li>
 
               <li className="items-center">

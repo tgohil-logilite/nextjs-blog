@@ -10,6 +10,7 @@ import IndexNavbar from "../components/Navbars/IndexNavbar.js";
 import AdminNavbar from "../components/Navbars/AdminNavbar"
 import AuthNavbar from "../components/Navbars/AuthNavbar"
 import Sidebar from '../components/Sidebar/Sidebar';
+import FooterAdmin from '../components/Footers/Footer';
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -17,41 +18,38 @@ export default function Home() {
 
   return (
 
-    
+
 
     <div className={styles.container}>
-      
-      <AuthNavbar />
-      
+
+     
+
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      
+
       <main className={styles.main}>
-      <section className={utilStyles.headingMd}>
-         <p>Prof. Tushar Gohil</p>
-        <p>Assistant Professor, IT Department, SCET, Surat.</p>
-       
-      </section>
+      
         <div className={styles.user}>
-           {loading && <div className={styles.title}>Loading...</div>}
-           {
+          {loading && <div className={styles.title}>Loading...</div>}
+          {
             session &&
-              <>
+            <>
               <Sidebar />
-               <p style={{ marginBottom: '10px' }}> Welcome, {session.user.name ?? session.user.email}</p> <br />
-               <img src={session.user.image} alt="" className={styles.avatar} />
+
+             
               
-              </>
-            }
-           {
+            </>
+          }
+          {
             !session &&
-              <>
-               <p className={styles.title}>Please Sign in</p>
-              
-              </>
-           }
-         </div>
+            <>
+              <p className={styles.title}>Please Sign in</p>
+              <Header />
+            </>
+          }
+        </div>
+       
       </main>
     </div>
   )
